@@ -17,6 +17,10 @@ open class CodbergFcm: FirebaseMessagingService() {
         onNewTokenOverride(token)
     }
 
+    open fun onNewTokenOverride(token: String) {
+        Log.e("Firebase", "Fcm Token : $token")
+    }
+
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 //        super.onMessageReceived(p0)
         remoteMessage?.let {
@@ -27,12 +31,12 @@ open class CodbergFcm: FirebaseMessagingService() {
         }
     }
 
-    fun onNewTokenOverride(token: String) {
-        Log.e("Firebase", "Fcm Token : $token")
-    }
-
-    fun onMessageReceivedOverride(remoteMessage: RemoteMessage) {
-        sendNotification(remoteMessage)
+//    fun onNewTokenOverride(token: String) {
+//        Log.e("Firebase", "Fcm Token : $token")
+//    }
+//
+    open fun onMessageReceivedOverride(remoteMessage: RemoteMessage) {
+//        sendNotification(remoteMessage)
     }
 
     fun sendNotification(remoteMessage: RemoteMessage) {
@@ -74,5 +78,10 @@ open class CodbergFcm: FirebaseMessagingService() {
             val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.notify(Constant.FCM_ID, it.build())
         }
+    }
+
+    interface FcmInterface {
+        fun onNewTokenOverride(token: String)
+        fun onMessageReceivedOverride(remoteMessage: RemoteMessage)
     }
 }
