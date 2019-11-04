@@ -14,16 +14,25 @@ open class CodbergFcm: FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-        Log.e("Firebase", "Fcm Token : $token")
+        onNewTokenOverride(token)
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 //        super.onMessageReceived(p0)
         remoteMessage?.let {
             if(it.data.isNotEmpty()) {
-                sendNotification(remoteMessage)
+//                sendNotification(remoteMessage)
+                onMessageReceivedOverride(remoteMessage)
             }
         }
+    }
+
+    fun onNewTokenOverride(token: String) {
+        Log.e("Firebase", "Fcm Token : $token")
+    }
+
+    fun onMessageReceivedOverride(remoteMessage: RemoteMessage) {
+        sendNotification(remoteMessage)
     }
 
     fun sendNotification(remoteMessage: RemoteMessage) {
