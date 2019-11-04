@@ -1,0 +1,2 @@
+include ':app', ':fcm'
+rootProject.name='CodbergFcm'
