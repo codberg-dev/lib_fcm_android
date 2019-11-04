@@ -10,21 +10,29 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-open class CodbergFcm: FirebaseMessagingService() {
+open class CodbergFcm: FirebaseMessagingService(), FcmInterface {
+    override fun onNewTokenOverride(token: String) {
+        Log.e("Firebase", "Fcm Token : $token")
+    }
+
+    override fun onMessageReceivedOverride(remoteMessage: RemoteMessage) {
+        Log.e("Firebase", "onMessageReceivedOverride")
+    }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
         onNewTokenOverride(token)
     }
 
-    open fun onNewTokenOverride(token: String) {
-        Log.e("Firebase", "Fcm Token : $token")
-    }
+//    open fun onNewTokenOverride(token: String) {
+//        Log.e("Firebase", "Fcm Token : $token")
+//    }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
 //        super.onMessageReceived(p0)
         remoteMessage?.let {
             if(it.data.isNotEmpty()) {
+
 //                sendNotification(remoteMessage)
                 onMessageReceivedOverride(remoteMessage)
             }
@@ -35,9 +43,10 @@ open class CodbergFcm: FirebaseMessagingService() {
 //        Log.e("Firebase", "Fcm Token : $token")
 //    }
 //
-    open fun onMessageReceivedOverride(remoteMessage: RemoteMessage) {
-//        sendNotification(remoteMessage)
-    }
+//    open fun onMessageReceivedOverride(remoteMessage: RemoteMessage) {
+//        Log.e("Firebase", "onMessageReceivedOverride")
+////        sendNotification(remoteMessage)
+//    }
 
     fun sendNotification(remoteMessage: RemoteMessage) {
         val title = remoteMessage.data["title"]
@@ -79,9 +88,9 @@ open class CodbergFcm: FirebaseMessagingService() {
             notificationManager.notify(Constant.FCM_ID, it.build())
         }
     }
+}
 
-    interface FcmInterface {
-        fun onNewTokenOverride(token: String)
-        fun onMessageReceivedOverride(remoteMessage: RemoteMessage)
-    }
+interface FcmInterface {
+    fun onNewTokenOverride(token: String)
+    fun onMessageReceivedOverride(remoteMessage: RemoteMessage)
 }
