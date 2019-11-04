@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class CodbergFcm(val mContext: Context, val pushIconResourceId: Int): FirebaseMessagingService() {
+class CodbergFcm: FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
@@ -26,7 +26,7 @@ class CodbergFcm(val mContext: Context, val pushIconResourceId: Int): FirebaseMe
         }
     }
 
-    private fun sendNotification(remoteMessage: RemoteMessage) {
+    fun sendNotification(remoteMessage: RemoteMessage) {
         val title = remoteMessage.data["title"]
         val message = remoteMessage.data["message"]
 
@@ -46,8 +46,7 @@ class CodbergFcm(val mContext: Context, val pushIconResourceId: Int): FirebaseMe
             }
             notiChannel.createNotificationChannel(channelMessage)
 
-            notificationBuilder = NotificationCompat.Builder(mContext, channelId)
-                .setSmallIcon(pushIconResourceId)
+            notificationBuilder = NotificationCompat.Builder(this, channelId)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setChannelId(channelId)
@@ -55,8 +54,7 @@ class CodbergFcm(val mContext: Context, val pushIconResourceId: Int): FirebaseMe
                 .setDefaults(Notification.DEFAULT_SOUND and Notification.DEFAULT_VIBRATE)
         }
         else {
-            notificationBuilder = NotificationCompat.Builder(mContext, "")
-                .setSmallIcon(pushIconResourceId)
+            notificationBuilder = NotificationCompat.Builder(this, "")
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
