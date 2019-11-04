@@ -10,7 +10,7 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 
-class CodbergFcm: FirebaseMessagingService() {
+open class CodbergFcm: FirebaseMessagingService() {
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
